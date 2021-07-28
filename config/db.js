@@ -5,7 +5,7 @@ mongoose.connect(
   config.get("mongoURI"),
   {
     useCreateIndex: true,
-    useFindAndModify: true,
+    useFindAndModify: false,
     useNewUrlParser: true,
     useUnifiedTopology: true,
   },

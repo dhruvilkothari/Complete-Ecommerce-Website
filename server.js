@@ -17,6 +17,12 @@ app.get("/", (req, res) => {
   res.send("HELLO !! API RUNNING");
 });
 
+const Profile = require("./models/profile");
+
+const newProfile = new Profile({
+  name: "Dhruvil",
+});
+
 app.listen(PORT, () => {
   console.log(`Backend Started at ${PORT}`);
 });
