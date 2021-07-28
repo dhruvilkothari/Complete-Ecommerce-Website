@@ -150,4 +150,28 @@ router.get("/user/:user_id", async (req, res) => {
   }
 });
 
+// @route Delete api/profile/
+// @des Delete Profile user post
+// @acess Private
+
+router.delete("/", auth, async (req, res) => {
+  try {
+    // remove profile
+    const profile = await Profile.findOneAndRemove({ user: req.user.id });
+    if (!profile) {
+      return res.status(404).json({ message: "Profile Doesnt exist" });
+    }
+    // remove User
+    const user = await User.findByIdAndRemove(req.user.id);
+    res.json({ msg: "User Removed" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route put api/profile/experience
+// @des add Profile profule experience
+// @acess Private
+
 module.exports = router;
