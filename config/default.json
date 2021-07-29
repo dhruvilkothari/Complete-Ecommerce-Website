@@ -1,4 +1,7 @@
 {
     "mongoURI":"mongodb://localhost:27017/dev-connector",
-    "jwtSecretKey":"mysecret"
+    "jwtSecretKey":"mysecret",
+    "ClientId":"b20228c2317796c8ee8a",
+    "ClientSecret":"7b6be2a97bfc2aba7faf851b24cb07fbb3cf0bf8"
+  
 }

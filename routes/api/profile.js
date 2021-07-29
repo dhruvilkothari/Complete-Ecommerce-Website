@@ -1,9 +1,11 @@
 const router = require("express").Router();
 const auth = require("../../middleware/auth");
 const Profile = require("../../models/profile");
+const config = require("config");
 const User = require("../../models/User");
 const { check, validationResult } = require("express-validator/check");
 const profile = require("../../models/profile");
+const request = require("request");
 
 // @route Get api/profile/me
 // @des Get currnent Profile
@@ -296,6 +298,40 @@ router.delete("/education/:edu_id", auth, async (req, res) => {
     await profile.save();
     res.send(profile);
   } catch (err) {}
+});
+
+// @route Get api/profile/github/:username
+// @des get User repos
+// @acess Public
+
+router.get("/github/:username", async (req, res) => {
+  try {
+    const options = {
+      uri: `https://api.github.com/users/${
+        req.params.username
+      }/repos?per_page=5&sort=created:asc&client_id=${config.get(
+        "ClientId"
+      )}&client_secret=${config.get("ClientSecret")}`,
+
+      method: "GET",
+
+      headers: { "user-agent": "nodejs" },
+    };
+
+    request(options, (err, response, body) => {
+      if (err) {
+        console.error(err.message);
+      }
+      if (response.statusCode !== 200) {
+        return res.status(404).json({ msg: "No Git hub Profile Found" });
+      }
+
+      res.json(JSON.parse(body));
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 module.exports = router;
